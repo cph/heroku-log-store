@@ -14,8 +14,8 @@ class HerokuLogDrain < Goliath::API
 
   def response(env)
     case env["PATH_INFO"]
-    when "/drain" then
-      store_log(env[Goliath::Request::RACK_INPUT].read, env["HTTP_LOGPLEX_DRAIN_TOKEN"]) if env[Goliath::Request::REQUEST_METHOD] == "POST"
+    when /\/drain\/(\w+)/ then
+      store_log(env[Goliath::Request::RACK_INPUT].read, $1) if env[Goliath::Request::REQUEST_METHOD] == "POST"
       [200, {}, "drained"]
     when "/" then
       [200, {}, haml(:index, locals: {
@@ -27,11 +27,11 @@ class HerokuLogDrain < Goliath::API
     end
   end
 
-  def store_log(log_string, ep_app_id)
+  def store_log(log_string, ep_app)
     event_data = HerokuLogParser.parse(log_string).first
     return unless event_data[:proc_id] =~ /web/
     return if event_data[:original] =~ /source=rack-timeout/
-    event_data.merge!(ep_app: ENV[ep_app_id])
+    event_data.merge!(ep_app: ep_app)
     DB[:events].multi_insert([event_data], commit_every: 10)
   end
 
