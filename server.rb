@@ -28,11 +28,12 @@ class HerokuLogDrain < Goliath::API
   end
 
   def store_log(log_string, ep_app_id)
-    event_data = HerokuLogParser.parse(log_string).first
-    return unless event_data[:proc_id] =~ /web/
-    return if event_data[:original] =~ /source=rack-timeout/
-    event_data.merge!(ep_app: ENV[ep_app_id])
-    DB[:events].multi_insert([event_data], commit_every: 10)
+    HerokuLogParser.parse(log_string).each do |event_data|
+      next unless event_data[:proc_id] =~ /web/
+      next if event_data[:original] =~ /source=rack-timeout/
+      event_data.merge!(ep_app: ENV[ep_app_id])
+      DB[:events].multi_insert([event_data], commit_every: 10)
+    end
   end
 
   def self.protected?
