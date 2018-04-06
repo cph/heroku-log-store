@@ -27,11 +27,11 @@ class HerokuLogDrain < Goliath::API
     end
   end
 
-  def store_log(log_string, ep_app_id)
+  def store_log(log_string, ep_app)
     event_data = HerokuLogParser.parse(log_string).map { |parsed_line|
       next unless parsed_line[:proc_id] =~ /web/
       next if parsed_line[:original] =~ /source=rack-timeout/
-      parsed_line.merge(ep_app: ENV[ep_app_id])
+      parsed_line.merge(ep_app: ep_app)
     }.compact
     DB[:events].multi_insert(event_data, commit_every: 10)
     end
