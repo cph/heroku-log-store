@@ -2,6 +2,7 @@ require "./config"
 require "goliath/rack/templates"
 
 class HerokuLogDrain < Goliath::API
+  use Airbrake::Rack::Middleware
 
   include Goliath::Rack::Templates
 
