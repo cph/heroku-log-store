@@ -12,3 +12,4 @@ gem "haml"
 gem "heroku-log-parser", git: "https://github.com/rwdaigle/heroku-log-parser.git"
 
 gem "airbrake"
+gem "rake"
