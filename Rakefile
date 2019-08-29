@@ -1,8 +1,9 @@
 # $:.unshift("lib")
 
+require "./config"
+Rake.add_rakelib "lib/tasks"
+
 # require "rake/testtask"
-# require "./config"
-# require "./lib/tasks/clorox"
 
 # task :default => ['test']
 # Rake::TestTask.new do |t|
