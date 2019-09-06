@@ -1,5 +1,5 @@
 Sequel.migration do
-  transaction
+  no_transaction
 
   up do
     run <<-EOS
