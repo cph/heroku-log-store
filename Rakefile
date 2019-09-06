@@ -1,6 +1,6 @@
 # $:.unshift("lib")
 
-require "./config"
+require "./config_sequel"
 Rake.add_rakelib "lib/tasks"
 
 # require "rake/testtask"
