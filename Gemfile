@@ -13,4 +13,3 @@ gem "heroku-log-parser", git: "https://github.com/rwdaigle/heroku-log-parser.git
 
 gem "airbrake"
 gem "rake"
-gem "logeater", "0.5.4.pre"
