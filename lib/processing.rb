@@ -4,7 +4,7 @@ module Processing
 
   def self.perform!(app_name)
     events = Logeater::Event.where(ep_app: app_name).unprocessed
-    file = Logeater::EventFile.new(events)
+    file = Logeater::Eventfile.new(events)
     reader = Logeater::Reader.new(app_name, file, {})
 
     started_at = Time.now
